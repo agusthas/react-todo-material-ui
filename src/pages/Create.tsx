@@ -12,7 +12,9 @@ import {
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import { KeyboardArrowRight } from '@material-ui/icons';
-import type { CategoryType } from '../types';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import type { CategoryType, PostNote } from '../types';
 
 const useStyles = makeStyles({
   field: {
@@ -24,6 +26,8 @@ const useStyles = makeStyles({
 
 export const Create = (): JSX.Element => {
   const classes = useStyles();
+
+  const history = useHistory();
 
   const [title, setTitle] = useState(''); // state for title
   const [details, setDetails] = useState(''); // state for details
@@ -45,11 +49,15 @@ export const Create = (): JSX.Element => {
     }
 
     if (title && details) {
-      console.log('-->', title, details, category);
+      const newNote: PostNote = {
+        title,
+        details,
+        category,
+      };
 
-      setTitle('');
-      setDetails('');
-      setCategory('todos');
+      axios.post('/notes', newNote).then(() => {
+        history.push('/');
+      });
     }
   };
 
