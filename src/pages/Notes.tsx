@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Grid } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
+import Masonry from 'react-masonry-css';
 import { INote } from '../types';
 import { NoteCard } from '../components/NoteCard';
 
+const useStyles = makeStyles({
+  masonryGrid: {
+    display: 'flex',
+    marginLeft: '-30px',
+    width: 'auto',
+  },
+  masonryGridColumn: {
+    paddingLeft: 30,
+    backgroundClip: 'padding-box',
+    '& > div': {
+      marginBottom: 30,
+    },
+  },
+});
+
 export const Notes = (): JSX.Element => {
+  const classes = useStyles();
   const [notes, setNotes] = useState<INote[]>([]);
 
   useEffect(() => {
@@ -18,15 +35,26 @@ export const Notes = (): JSX.Element => {
     setNotes(filteredNotes);
   };
 
+  // breakpoints for masonry
+  const breakpoints = {
+    default: 3,
+    1100: 2,
+    700: 1,
+  };
+
   return (
     <Container>
-      <Grid container spacing={3}>
+      <Masonry
+        breakpointCols={breakpoints}
+        className={classes.masonryGrid}
+        columnClassName={classes.masonryGridColumn}
+      >
         {notes.map((note) => (
-          <Grid key={note.id} item xs={12} md={6} lg={4}>
+          <div key={note.id}>
             <NoteCard note={note} handleDelete={handleDelete} />
-          </Grid>
+          </div>
         ))}
-      </Grid>
+      </Masonry>
     </Container>
   );
 };
