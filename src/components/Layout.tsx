@@ -9,6 +9,7 @@ import {
   Theme,
   AppBar,
   Toolbar,
+  Avatar,
 } from '@material-ui/core';
 import { AddCircleOutlineOutlined, SubjectOutlined } from '@material-ui/icons';
 import React from 'react';
@@ -61,6 +62,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   date: {
     flexGrow: 1,
   },
+  avatar: {
+    marginLeft: theme.spacing(2),
+  },
 }));
 
 export const Layout = ({ children }: LayoutProps): JSX.Element => {
@@ -91,6 +95,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
             Today is the {format(new Date(), 'do MMMM Y')}
           </Typography>
           <Typography>SusuMantan</Typography>
+          <Avatar className={classes.avatar} src="/avatar.png" />
         </Toolbar>
       </AppBar>
 

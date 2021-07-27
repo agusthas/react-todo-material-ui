@@ -8,8 +8,10 @@ import {
   Theme,
   makeStyles,
   createStyles,
+  Avatar,
 } from '@material-ui/core';
 import { DeleteOutlined } from '@material-ui/icons';
+import { blue, green, pink, yellow } from '@material-ui/core/colors';
 import { INote } from '../types';
 
 type NoteCardProps = {
@@ -19,8 +21,22 @@ type NoteCardProps = {
 
 const useStyles = makeStyles<Theme, INote>(() =>
   createStyles({
-    test: {
-      border: ({ category }) => (category === 'work' ? '1px solid red' : ''),
+    avatar: {
+      backgroundColor: ({ category }) => {
+        switch (category) {
+          case 'work':
+            return yellow[700];
+
+          case 'money':
+            return green[500];
+
+          case 'todos':
+            return pink[500];
+
+          default:
+            return blue[500];
+        }
+      },
     },
   })
 );
@@ -33,8 +49,13 @@ export const NoteCard = ({
 
   return (
     <div>
-      <Card elevation={1} className={classes.test}>
+      <Card elevation={1}>
         <CardHeader
+          avatar={
+            <Avatar className={classes.avatar}>
+              {note.category[0].toUpperCase()}
+            </Avatar>
+          }
           action={
             <IconButton onClick={() => handleDelete(note.id)}>
               <DeleteOutlined />
